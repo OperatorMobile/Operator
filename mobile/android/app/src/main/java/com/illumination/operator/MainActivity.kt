@@ -543,19 +543,11 @@ private fun CodexWorkspaceDock(
     var fastServiceTier by remember(uiPreferences) {
         mutableStateOf(uiPreferences.getBoolean(OPERATOR_UI_FAST_SERVICE_TIER, false))
     }
-    var approvalPolicyOverride by remember(uiPreferences) {
-        mutableStateOf(uiPreferences.nonBlankString(OPERATOR_UI_APPROVAL_POLICY))
-    }
-    var approvalsReviewerOverride by remember(uiPreferences) {
-        mutableStateOf(uiPreferences.nonBlankString(OPERATOR_UI_APPROVALS_REVIEWER))
-    }
-    var permissionSelectionOverrideJson by remember(uiPreferences) {
-        mutableStateOf(
-            uiPreferences.nonBlankString(OPERATOR_UI_PERMISSION_SELECTION)
-                ?: uiPreferences.nonBlankString(OPERATOR_UI_PERMISSION_PROFILE)
-                    ?.let { operatorPermissionProfileSelection(it).toString() }
-        )
-    }
+    // Approval and permission overrides are intentionally session-only: commands execute
+    // inside the app UID, so app-writable preferences must not become a policy boundary.
+    var approvalPolicyOverride by remember(uiPreferences) { mutableStateOf<String?>(null) }
+    var approvalsReviewerOverride by remember(uiPreferences) { mutableStateOf<String?>(null) }
+    var permissionSelectionOverrideJson by remember(uiPreferences) { mutableStateOf<String?>(null) }
     var personalityOverride by remember(uiPreferences) {
         mutableStateOf(uiPreferences.nonBlankString(OPERATOR_UI_PERSONALITY_OVERRIDE))
     }
@@ -2942,9 +2934,11 @@ private fun CodexWorkspaceDock(
             .putNullableString(OPERATOR_UI_ACTIVE_PROJECT_CWD, activeProjectCwd)
             .putNullableString(OPERATOR_UI_MODEL_OVERRIDE, modelOverride)
             .putNullableString(OPERATOR_UI_REASONING_EFFORT, reasoningEffortOverride)
-            .putNullableString(OPERATOR_UI_APPROVAL_POLICY, approvalPolicyOverride)
-            .putNullableString(OPERATOR_UI_APPROVALS_REVIEWER, approvalsReviewerOverride)
-            .putNullableString(OPERATOR_UI_PERMISSION_SELECTION, permissionSelectionOverrideJson)
+            // Drop stale persisted policy overrides instead of trusting app-writable prefs.
+            .remove(OPERATOR_UI_APPROVAL_POLICY)
+            .remove(OPERATOR_UI_APPROVALS_REVIEWER)
+            .remove(OPERATOR_UI_PERMISSION_SELECTION)
+            .remove(OPERATOR_UI_PERMISSION_PROFILE)
             .putNullableString(OPERATOR_UI_PERSONALITY_OVERRIDE, personalityOverride)
             .putBoolean(OPERATOR_UI_FAST_SERVICE_TIER, fastServiceTier)
             .putBoolean(OPERATOR_UI_PLAN_MODE, planModeEnabled)
