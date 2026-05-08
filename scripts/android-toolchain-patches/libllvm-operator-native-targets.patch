@@ -1,0 +1,62 @@
+diff --git a/packages/libllvm/build.sh b/packages/libllvm/build.sh
+--- a/packages/libllvm/build.sh
++++ b/packages/libllvm/build.sh
+@@ -47,8 +47,6 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
+ -DLLVM_ENABLE_SPHINX=ON
+ -DSPHINX_OUTPUT_MAN=ON
+ -DSPHINX_WARNINGS_AS_ERRORS=OFF
+--DLLVM_TARGETS_TO_BUILD=all
+--DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=ARC;CSKY;M68k;VE
+ -DPERL_EXECUTABLE=$(command -v perl)
+ -DLLVM_ENABLE_FFI=ON
+ -DLLVM_ENABLE_RTTI=ON
+@@ -83,10 +81,18 @@ termux_step_host_build() {
+ 	termux_setup_cmake
+ 	termux_setup_ninja
+ 
++	local llvm_host_projects="${OPERATOR_LLVM_HOST_ENABLE_PROJECTS:-clang;clang-tools-extra}"
++	local -a llvm_host_tools=(
++		clang-tblgen
++		clang-tidy-confusable-chars-gen
++		llvm-tblgen
++	)
++	[[ ";$llvm_host_projects;" == *";lldb;"* ]] && llvm_host_tools+=(lldb-tblgen)
++	[[ ";$llvm_host_projects;" == *";mlir;"* ]] && llvm_host_tools+=(mlir-tblgen mlir-linalg-ods-yaml-gen)
++
+ 	cmake -G Ninja -DCMAKE_BUILD_TYPE=Release \
+-		-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;lldb;mlir' "$TERMUX_PKG_SRCDIR/llvm"
+-	ninja -j "$TERMUX_PKG_MAKE_PROCESSES" clang-tblgen clang-tidy-confusable-chars-gen \
+-		lldb-tblgen llvm-tblgen mlir-tblgen mlir-linalg-ods-yaml-gen
++		-DLLVM_ENABLE_PROJECTS="$llvm_host_projects" "$TERMUX_PKG_SRCDIR/llvm"
++	ninja -j "$TERMUX_PKG_MAKE_PROCESSES" "${llvm_host_tools[@]}"
+ }
+ 
+ # shellcheck disable=SC2031
+@@ -110,7 +117,13 @@ termux_step_pre_configure() {
+ 	fi
+ 	TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" -DDEFAULT_SYSROOT=$default_sysroot"
+ 
+-	local llvm_projects="clang;clang-tools-extra;compiler-rt;lld;lldb;mlir;openmp;polly"
++	local llvm_projects="${OPERATOR_LLVM_ENABLE_PROJECTS:-clang;clang-tools-extra;compiler-rt;lld;openmp}"
++	local llvm_targets="${OPERATOR_LLVM_TARGETS_TO_BUILD:-$llvm_target_arch}"
++	TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" -DLLVM_TARGETS_TO_BUILD=$llvm_targets"
++	if [[ -n "${OPERATOR_LLVM_EXPERIMENTAL_TARGETS_TO_BUILD:-}" ]]; then
++		TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=$OPERATOR_LLVM_EXPERIMENTAL_TARGETS_TO_BUILD"
++	fi
++
+ 	TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" -DLLVM_ENABLE_PROJECTS=$llvm_projects"
+ 
+ 	# see CMakeLists.txt and tools/clang/CMakeLists.txt
+diff --git a/packages/libllvm/llvm-config.in b/packages/libllvm/llvm-config.in
+--- a/packages/libllvm/llvm-config.in
++++ b/packages/libllvm/llvm-config.in
+@@ -144,7 +144,7 @@ handle_args () {
+ 		libs) echo "$libs";;
+ 		libnames) echo "libLLVM-${version/.*/}.so";;
+ 		libfiles) echo "$LIBFILE";;
+ 		components) echo "$components";;
+-		targets-built) echo "AArch64 AMDGPU ARM AVR BPF Hexagon Lanai LoongArch Mips MSP430 NVPTX PowerPC RISCV Sparc SPIRV SystemZ VE WebAssembly X86 XCore ARC CSKY M68k";;
++		targets-built) echo "@LLVM_TARGET_ARCH@";;
+ 		host-target) echo "@LLVM_DEFAULT_TARGET_TRIPLE@";;
+ 		build-mode) echo "Release";;
+ 		assertion-mode) echo "OFF";;

@@ -1,0 +1,35 @@
+--- a/deps/zlib/cpu_features.c
++++ b/deps/zlib/cpu_features.c
+@@ -44,9 +44,7 @@
+ #include <pthread.h>
+ #endif
+ 
+-#if defined(ARMV8_OS_ANDROID)
+-#include <cpu-features.h>
+-#elif defined(ARMV8_OS_LINUX)
++#if defined(ARMV8_OS_ANDROID) || defined(ARMV8_OS_LINUX)
+ #include <asm/hwcap.h>
+ #include <sys/auxv.h>
+ #elif defined(ARMV8_OS_FUCHSIA)
+@@ -106,18 +105,11 @@
+ static void _cpu_check_features(void)
+ {
+-#if defined(ARMV8_OS_ANDROID) && defined(__aarch64__)
+-    uint64_t features = android_getCpuFeatures();
+-    arm_cpu_enable_crc32 = !!(features & ANDROID_CPU_ARM64_FEATURE_CRC32);
+-    arm_cpu_enable_pmull = !!(features & ANDROID_CPU_ARM64_FEATURE_PMULL);
+-#elif defined(ARMV8_OS_ANDROID) /* aarch32 */
+-    uint64_t features = android_getCpuFeatures();
+-    arm_cpu_enable_crc32 = !!(features & ANDROID_CPU_ARM_FEATURE_CRC32);
+-    arm_cpu_enable_pmull = !!(features & ANDROID_CPU_ARM_FEATURE_PMULL);
+-#elif defined(ARMV8_OS_LINUX) && defined(__aarch64__)
++#if (defined(ARMV8_OS_ANDROID) || defined(ARMV8_OS_LINUX)) && defined(__aarch64__)
+     unsigned long features = getauxval(AT_HWCAP);
+     arm_cpu_enable_crc32 = !!(features & HWCAP_CRC32);
+     arm_cpu_enable_pmull = !!(features & HWCAP_PMULL);
+-#elif defined(ARMV8_OS_LINUX) && (defined(__ARM_NEON) || defined(__ARM_NEON__))
++#elif (defined(ARMV8_OS_ANDROID) || defined(ARMV8_OS_LINUX)) && \
++    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+     /* Query HWCAP2 for ARMV8-A SoCs running in aarch32 mode */
+     unsigned long features = getauxval(AT_HWCAP2);
+     arm_cpu_enable_crc32 = !!(features & HWCAP2_CRC32);

@@ -1,0 +1,46 @@
+# package	category	required	notes
+busybox	shell	true	POSIX applets and fallback shell utilities
+coreutils	shell	true	GNU-compatible common file/text utilities
+findutils	shell	true	find/xargs behavior expected by build scripts
+sed	shell	true	GNU sed behavior expected by configure scripts
+grep	shell	true	GNU grep behavior expected by configure scripts
+gawk	shell	true	awk implementation expected by autotools/pkg builds
+diffutils	shell	true	diff/cmp/sdiff support
+patch	shell	true	patch support for source builds
+tar	archive	true	tar support
+gzip	archive	true	gzip support
+xz-utils	archive	true	xz/liblzma command support
+zstd	archive	true	zstd archive support and SDK compression support
+unzip	archive	true	zip extraction support
+file	diagnostics	true	file type inspection and build-script checks
+which	diagnostics	true	command discovery expected by users and scripts
+curl	network	true	HTTP/TLS downloads and diagnostics
+ca-certificates	network	true	shared TLS trust bundle
+git	vcs	true	Git CLI with HTTPS remotes
+openssh	network	true	SSH/SCP/SFTP client tools and key management
+clang	compiler	true	C/C++ compiler frontends and aliases
+lld	compiler	true	Android-native linker
+llvm	compiler	true	llvm-ar/llvm-ranlib/llvm-strip and support tools
+make	build	true	GNU make
+cmake	build	true	CMake configure/build support
+ninja	build	true	Ninja build support
+pkg-config	build	true	pkg-config for app-local headers/libs
+autoconf	build	true	Autotools configure generation support
+automake	build	true	Autotools Makefile generation support
+libtool	build	true	Libtool support for native packages
+m4	build	true	Autoconf m4 dependency
+python	runtime	true	CPython runtime, venv, headers, and sysconfig
+python-ensurepip-wheels	runtime	true	ensurepip wheel payload for venv bootstrapping
+python-pip	runtime	true	pip package installer and command wrappers
+nodejs	runtime	true	Node.js runtime with full ICU
+npm	runtime	true	npm/npx package installer and command wrappers
+rust	runtime	true	rustc/cargo/rustdoc/rustfmt and aarch64-linux-android stdlib
+openssl	devlib	true	TLS/crypto headers and libraries
+zlib	devlib	true	zlib headers and libraries
+libffi	devlib	true	ctypes/cffi/native Python package support
+sqlite	devlib	true	sqlite3 headers and libraries
+readline	devlib	true	readline headers and libraries
+ncurses	devlib	true	terminal/readline headers and libraries
+bzip2	devlib	true	bz2 headers and libraries
+xz	devlib	true	liblzma headers and libraries
+zstd-dev	devlib	true	zstd headers and libraries

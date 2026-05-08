@@ -1,0 +1,40 @@
+name: Build Rusty V8 Android Artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      include_x86_64_android:
+        description: Build optional x86_64 Android artifacts.
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: rusty_v8 Android artifacts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Rust
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+
+      - name: Show Docker host
+        run: docker version
+
+      - name: Build artifacts
+        env:
+          INCLUDE_X86_64_ANDROID: ${{ inputs.include_x86_64_android && '1' || '0' }}
+        run: scripts/build-rusty-v8-android-artifacts.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rusty-v8-android-v146.4.0
+          path: local-artifacts/rusty-v8/v146.4.0/
+          if-no-files-found: error

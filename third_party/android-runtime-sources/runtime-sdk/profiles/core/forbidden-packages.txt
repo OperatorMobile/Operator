@@ -1,0 +1,12 @@
+# Packages intentionally excluded from the Android-native core profile.
+# These usually drag GUI/X11/SVN/glibc-desktop dependency graphs into a phone
+# runtime that only needs headless CLI development tools.
+tk
+libx11
+xorg-xauth
+git-gui
+gitk
+git-svn
+subversion
+subversion-perl
+gdb

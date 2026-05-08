@@ -1,0 +1,35 @@
+[package]
+name = "operator-mobile-engine"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[lib]
+name = "operator_mobile_engine"
+crate-type = ["cdylib"]
+
+[dependencies]
+codex-app-server-client = { path = "../../third_party/codex/codex-rs/app-server-client" }
+codex-app-server-protocol = { path = "../../third_party/codex/codex-rs/app-server-protocol" }
+codex-arg0 = { path = "../../third_party/codex/codex-rs/arg0" }
+codex-client = { path = "../../third_party/codex/codex-rs/codex-client" }
+codex-config = { path = "../../third_party/codex/codex-rs/config" }
+codex-feedback = { path = "../../third_party/codex/codex-rs/feedback" }
+codex-protocol = { path = "../../third_party/codex/codex-rs/protocol" }
+# temporal_rs 0.1.2, pulled through rusty_v8/code-mode, is not compatible with
+# the ICU 2.2 API yet. Pin the ICU minor it was authored against so Android
+# keeps Codex code-mode instead of dropping the feature from the mobile build.
+icu_calendar = "=2.1.0"
+icu_locale = "=2.1.0"
+icu_locale_core = "=2.1.0"
+jni = "0.21"
+serde_json = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "time"] }
+toml = "0.9.5"
+
+[build-dependencies]
+cc = "1"
+
+[patch.crates-io]
+tokio-tungstenite = { git = "https://github.com/openai-oss-forks/tokio-tungstenite", rev = "132f5b39c862e3a970f731d709608b3e6276d5f6" }
+tungstenite = { git = "https://github.com/openai-oss-forks/tungstenite-rs", rev = "9200079d3b54a1ff51072e24d81fd354f085156f" }

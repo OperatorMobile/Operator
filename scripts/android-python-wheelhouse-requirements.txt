@@ -1,0 +1,9 @@
+# Optional pinned wheels to package into the Android APK-local wheelhouse.
+#
+# Keep this empty by default. Pure-Python packages such as uvicorn should be
+# installed with normal pip on the phone so they exercise Android pip behavior.
+#
+# Use this file for wheels that must be bundled offline, or point
+# ANDROID_PYTHON_WHEELHOUSE_REQUIREMENTS at another pinned requirements file.
+# Native packages must be supplied as Android-specific wheels; PyPI
+# manylinux/macos/windows wheels are not usable in the Android app runtime.

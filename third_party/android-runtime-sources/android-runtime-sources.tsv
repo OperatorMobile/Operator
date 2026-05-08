@@ -1,0 +1,20 @@
+# name	repo	ref	commit	license	purpose
+busybox	https://github.com/mirror/busybox.git	refs/tags/1_36_1	1a64f6a20aaf6ea4dbba68bbfa8cc1ab7e5c57c4	GPL-2.0-only	POSIX command coverage for Android Codex shells
+openssh-portable	https://github.com/openssh/openssh-portable.git	refs/tags/V_9_9_P2	d76b2675116617394cd355a3437b4963a562b64d	BSD-2-Clause AND BSD-3-Clause AND ISC	SSH client tools for Git SSH remotes and key management
+zlib	https://github.com/madler/zlib.git	refs/tags/v1.3.1	51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf	Zlib	OpenSSH compression dependency
+cpython	https://github.com/python/cpython.git	refs/tags/v3.13.2	4f8bb3947cfbc20f970ff9d9531e1132a9e95396	PSF-2.0	On-device Python scripting runtime
+libffi	https://github.com/libffi/libffi.git	refs/tags/v3.5.2	e2eda0cf72a0598b44278cc91860ea402273fa29	MIT	CPython ctypes dependency
+bzip2	https://gitlab.com/bzip2/bzip2.git	refs/tags/bzip2-1.0.8	6a8690fc8d26c815e798c588f796eabe9d684cf0	Bzip2-1.0.6	CPython bz2 compression dependency
+xz	https://github.com/tukaani-project/xz.git	refs/tags/v5.8.1	a522a226545730551f7e7c2685fab27cf567746c	0BSD AND LGPL-2.1-or-later AND GPL-2.0-or-later	CPython lzma compression dependency
+sqlite	https://github.com/sqlite/sqlite.git	refs/tags/version-3.53.1	ccd445d76a9362c63add000354fac84ba9022176	blessing	CPython sqlite3 dependency
+node	https://github.com/nodejs/node.git	refs/tags/v22.14.0	5d2feb257bcee090e57900eb51720171a6aa92f3	MIT	On-device JavaScript runtime and npm/npx base
+gnulib	https://git.savannah.gnu.org/git/gnulib.git	refs/heads/stable-202301	20932856a6a07f056918d58acd09cea4ba150a52	GPL-3.0-or-later AND LGPL-2.1-or-later	GNU make bootstrap dependency
+gnu-make	https://git.savannah.gnu.org/git/make.git	refs/tags/4.4.1	d66a65ad5a0e31b287f53930b0f09e31801f1613	GPL-3.0-or-later	Make-based project builds on device
+diffutils	https://git.savannah.gnu.org/git/diffutils.git	refs/tags/v3.11	3f326ae3ea7556e35152e13f01a0a4d8b8b4bc70	GPL-3.0-or-later	Optional GNU diff tooling; BusyBox also supplies diff
+patch	https://git.savannah.gnu.org/git/patch.git	refs/tags/v2.7.6	40b387de08653a1e46872b8ac1a6a14b9b94feb3	GPL-3.0-or-later	Optional GNU patch tooling; apply_patch remains bundled separately
+git	https://github.com/git/git.git	refs/tags/v2.54.0	94f057755b7941b321fd11fec1b2e3ca5313a4e0	GPL-2.0-only	Git CLI source corresponding to the packaged Android git binary
+github-cli	https://github.com/cli/cli.git	refs/tags/v2.90.0	26d2302cb8d6a327de6ab48f85bb039df57848c3	MIT	GitHub CLI auth, PR, issue, and repository workflows for Android shells
+curl	https://github.com/curl/curl.git	refs/tags/curl-8_20_0	a05f34973e6c4bb629d018f7cb51487be1c904d8	curl	Git HTTPS remote dependency
+openssl	https://github.com/openssl/openssl.git	refs/tags/openssl-3.6.2	fe686e15d84334b284f883118ed92f64b409b3aa	Apache-2.0	Git HTTPS and OpenSSH TLS/crypto dependency
+ripgrep	https://github.com/BurntSushi/ripgrep.git	refs/tags/15.1.0	af60c2de9d85e7f3d81c78601669468cf02dabab	Unlicense OR MIT	Source pointer for Android rg packaging
+termux-packages	https://github.com/termux/termux-packages.git	refs/heads/master	58b93ac4398b50d1c4d040434d8c29e244365e85	Apache-2.0 AND package-specific	Custom-prefix Android clang/rust/cargo package build system

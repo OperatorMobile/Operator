@@ -1,0 +1,30 @@
+# package	category	required	notes
+busybox	shell	true	POSIX applets and fallback shell utilities
+coreutils	shell	true	Common file/text utilities from the staged Android toolchain
+findutils	shell	true	find/xargs behavior expected by build scripts
+sed	shell	true	sed support
+grep	shell	true	grep support
+gawk	shell	true	awk implementation expected by configure scripts
+diffutils	shell	true	diff/cmp support
+tar	archive	true	tar support
+gzip	archive	true	gzip support
+xz-utils	archive	true	xz/liblzma command support
+curl	network	true	HTTP/TLS downloads and diagnostics
+ca-certificates	network	true	shared TLS trust bundle
+git	vcs	true	Git CLI with HTTPS remotes
+openssh	network	true	SSH/SCP/SFTP client tools and key management
+make	build	true	GNU make
+python	runtime	true	CPython runtime, headers, and sysconfig
+python-ensurepip-wheels	runtime	true	ensurepip wheel payload for venv bootstrapping
+python-pip	runtime	true	pip package installer and command wrappers
+nodejs	runtime	true	Node.js runtime
+npm	runtime	true	npm/npx package installer and command wrappers
+github-cli	vcs	true	GitHub CLI for auth and repository workflows
+ripgrep	search	true	Fast source search
+apply-patch	edit	true	Codex patch application helper
+openssl	devlib	true	TLS/crypto headers and libraries
+zlib	devlib	true	zlib headers and libraries
+libffi	devlib	true	ctypes/cffi/native Python package support
+sqlite	devlib	true	sqlite3 headers and libraries
+bzip2	devlib	true	bz2 headers and libraries
+xz	devlib	true	liblzma headers and libraries

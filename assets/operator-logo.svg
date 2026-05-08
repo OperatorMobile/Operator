@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108" role="img" aria-labelledby="title">
+  <title>Operator logo</title>
+  <path fill="#000000" d="M54,8C74,8 84,8 92,16C100,24 100,34 100,54C100,74 100,84 92,92C84,100 74,100 54,100C34,100 24,100 16,92C8,84 8,74 8,54C8,34 8,24 16,16C24,8 34,8 54,8z"/>
+  <path fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" d="M54,20a34,34 0,1 0,0 68a34,34 0,1 0,0 -68z"/>
+  <path fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" d="M40,42l14,12l-14,12"/>
+  <path fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" d="M61,67h14"/>
+  <circle cx="70" cy="38" r="4" fill="#FFFFFF"/>
+</svg>

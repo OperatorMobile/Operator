@@ -1,0 +1,30 @@
+Avoid pthread cancellation state calls on Android.
+
+Source: https://github.com/termux/termux-packages/blob/master/packages/git/run-command.c.patch
+
+diff --git a/run-command.c b/run-command.c
+index 41f85dc..cfc80a0 100644
+--- a/run-command.c
++++ b/run-command.c
+@@ -529,8 +529,10 @@ static void atfork_prepare(struct atfork_state *as)
+ #else
+ 	CHECK_BUG(pthread_sigmask(SIG_SETMASK, &all, &as->old),
+ 		"blocking all signals");
++# ifndef __ANDROID__
+ 	CHECK_BUG(pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &as->cs),
+ 		"disabling cancellation");
++# endif
+ #endif
+ }
+ 
+@@ -540,8 +542,10 @@ static void atfork_parent(struct atfork_state *as)
+ 	if (sigprocmask(SIG_SETMASK, &as->old, NULL))
+ 		die_errno("sigprocmask");
+ #else
++# ifndef __ANDROID__
+ 	CHECK_BUG(pthread_setcancelstate(as->cs, NULL),
+ 		"re-enabling cancellation");
++# endif
+ 	CHECK_BUG(pthread_sigmask(SIG_SETMASK, &as->old, NULL),
+ 		"restoring signal mask");
+ #endif

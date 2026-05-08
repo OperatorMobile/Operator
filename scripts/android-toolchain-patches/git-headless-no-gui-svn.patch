@@ -1,0 +1,34 @@
+diff --git a/packages/git/build.sh b/packages/git/build.sh
+index 7e1c471403..f1fbcc24cf 100644
+--- a/packages/git/build.sh
++++ b/packages/git/build.sh
+@@ -20,7 +20,6 @@ ac_cv_snprintf_returns_bogus=no
+ --with-curl
+ --with-expat
+ --with-shell=$TERMUX_PREFIX/bin/sh
+---with-tcltk=$TERMUX_PREFIX/bin/wish
+ "
+ # expat is only used by git-http-push for remote lock management over DAV, so disable:
+ # NO_INSTALL_HARDLINKS to use symlinks instead of hardlinks (which does not work on Android M):
+@@ -31,7 +30,9 @@ PERL_PATH=$TERMUX_PREFIX/bin/perl
+ USE_LIBPCRE2=1
+ DEFAULT_PAGER=pager
+ DEFAULT_EDITOR=editor
++NO_TCLTK=1
+ "
++TERMUX_PKG_RM_AFTER_INSTALL="bin/gitk libexec/git-core/git-gui libexec/git-core/git-gui--askpass libexec/git-core/git-svn* share/git-gui share/gitk share/man/man1/git-gui.1.gz share/man/man1/git-citool.1.gz share/man/man1/git-svn* share/man/man1/gitk.1* share/perl5/Git/SVN*"
+ TERMUX_PKG_BUILD_IN_SRC=true
+ 
+ termux_step_pre_configure() {
+@@ -82,7 +83,9 @@ termux_step_post_make_install() {
+ 		cd "$TERMUX_PREFIX/bin"
+ 		ln -sf ../libexec/git-core/git git
+ 		ln -sf ../libexec/git-core/git-upload-pack git-upload-pack
+ 		cd "$TERMUX_PREFIX/libexec/git-core"
+-		ln -sf git-gui git-citool
++		if [[ -e git-gui ]]; then
++			ln -sf git-gui git-citool
++		fi
+ 	)
+ }
+ 

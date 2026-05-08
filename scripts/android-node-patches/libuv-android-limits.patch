@@ -1,0 +1,17 @@
+--- a/deps/uv/src/unix/linux.c
++++ b/deps/uv/src/unix/linux.c
+@@ -26,9 +26,14 @@
+ #include "uv.h"
+ #include "internal.h"
+ 
+ #include <inttypes.h>
++#include <limits.h>
+ #include <stdatomic.h>
+ #include <stddef.h>  /* offsetof */
+ #include <stdint.h>
++
++#ifndef LLONG_MAX
++# define LLONG_MAX __LONG_LONG_MAX__
++#endif
+ #include <stdio.h>
+ #include <stdlib.h>

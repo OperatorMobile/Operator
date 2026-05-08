@@ -1,0 +1,38 @@
+diff --git a/packages/ncurses/build.sh b/packages/ncurses/build.sh
+index 9a1afc2fef..c9d19795e9 100644
+--- a/packages/ncurses/build.sh
++++ b/packages/ncurses/build.sh
+@@ -30,6 +30,12 @@ TERMUX_PKG_SHA256=(28cd102efe6a2610e830cc79cf270da6ff0427b2022900a9a36d2761522f
+                    "$(. "$TERMUX_SCRIPTDIR/x11-packages/alacritty/build.sh"; echo "$TERMUX_PKG_SHA256")"
+                    "$(. "$TERMUX_SCRIPTDIR/x11-packages/foot/build.sh"; echo "$TERMUX_PKG_SHA256")")
+ TERMUX_PKG_AUTO_UPDATE=false
++
++# Avoid a flaky Codeberg source fetch for foot terminfo. The runtime still
++# includes ncurses' core terminal entries and zsh does not require foot.
++TERMUX_PKG_VERSION=("${TERMUX_PKG_VERSION[@]:0:4}")
++TERMUX_PKG_SRCURL=("${TERMUX_PKG_SRCURL[@]:0:4}")
++TERMUX_PKG_SHA256=("${TERMUX_PKG_SHA256[@]:0:4}")
+ 
+ # ncurses-utils: tset/reset/clear are moved to package 'ncurses'.
+ TERMUX_PKG_BREAKS="ncurses-dev, ncurses-utils (<< 6.1.20190511-4)"
+@@ -117,7 +123,7 @@ termux_step_post_make_install() {
+ 	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/a/{alacritty{,+common,-direct},ansi} "$TI/a/"
+ 	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/d/{dtterm,dumb} "$TI/d/"
+ 	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/e/eterm-color "$TI/e/"
+-	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/f/foot{,+base,-direct} "$TI/f/"
++	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/f/foot{,+base,-direct} "$TI/f/" 2>/dev/null || true
+ 	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/g/gnome{,-256color} "$TI/g/"
+ 	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/n/nsterm "$TI/n/"
+ 	cp "$TERMUX_PKG_TMPDIR"/full-terminfo/k/kitty{,+common,-direct} "$TI/k/"
+@@ -134,7 +140,9 @@ termux_step_post_make_install() {
+ 	tic -x -e alacritty,alacritty+common,alacritty-direct -o "$TI" "$TERMUX_PKG_SRCDIR/alacritty-${TERMUX_PKG_VERSION[3]}/extra/alacritty.info"
+ 
+ 	# Upstream instructions for building foot's terminfo
+ 	# See: https://codeberg.org/dnkl/foot/src/branch/master/INSTALL.md#terminfo
+-	sed 's/@default_terminfo@/foot/g' "$TERMUX_PKG_SRCDIR/foot/foot.info" | \
+-	tic -x -e foot,foot-direct -o "$TI" -
++	if [[ -f "$TERMUX_PKG_SRCDIR/foot/foot.info" ]]; then
++		sed 's/@default_terminfo@/foot/g' "$TERMUX_PKG_SRCDIR/foot/foot.info" | \
++		tic -x -e foot,foot-direct -o "$TI" -
++	fi
+ }

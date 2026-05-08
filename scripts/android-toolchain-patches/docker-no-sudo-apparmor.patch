@@ -1,0 +1,33 @@
+diff --git a/scripts/run-docker.sh b/scripts/run-docker.sh
+index d9298ead76..41ba8df8ef 100755
+--- a/scripts/run-docker.sh
++++ b/scripts/run-docker.sh
+@@ -92,7 +92,11 @@ if [ "$UNAME" = Darwin ]; then
+ 	SEC_OPT=""
+ else
+ 	REPOROOT="$(dirname $(readlink -f $0))/../"
+-	SEC_OPT=" --security-opt seccomp=$REPOROOT/scripts/profile.json --security-opt apparmor=_custom-termux-package-builder-$CONTAINER_NAME --cap-add CAP_SYS_ADMIN --device /dev/fuse"
++	if [ -z "${TERMUX_DOCKER_USE_SUDO-}" ] && [ "$(id -u)" -ne 0 ]; then
++		SEC_OPT=" --security-opt seccomp=$REPOROOT/scripts/profile.json --security-opt apparmor=unconfined --cap-add CAP_SYS_ADMIN --device /dev/fuse"
++	else
++		SEC_OPT=" --security-opt seccomp=$REPOROOT/scripts/profile.json --security-opt apparmor=_custom-termux-package-builder-$CONTAINER_NAME --cap-add CAP_SYS_ADMIN --device /dev/fuse"
++	fi
+ fi
+ 
+ if [ "${CI:-}" = "true" ]; then
+@@ -149,10 +149,14 @@ fi
+ load_apparmor_profile() {
+ 	local profile_path="$1"
+ 	local msg="${2:-}"
++	if [ -z "$SUDO" ] && [ "$(id -u)" -ne 0 ]; then
++		return
++	fi
++
+ 	if [ -n "$APPARMOR_PARSER" ]; then
+ 		if [ -n "$msg" ]; then
+ 			echo "$msg..."
+ 		fi
+-		cat "$profile_path" | sed -e "s/{{CONTAINER_NAME}}/$CONTAINER_NAME/g" | sudo "$APPARMOR_PARSER" -rK
++		cat "$profile_path" | sed -e "s/{{CONTAINER_NAME}}/$CONTAINER_NAME/g" | $SUDO "$APPARMOR_PARSER" -rK
+ 	fi
+ }

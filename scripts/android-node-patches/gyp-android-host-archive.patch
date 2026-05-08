@@ -1,0 +1,21 @@
+diff --git a/tools/gyp/pylib/gyp/generator/make.py b/tools/gyp/pylib/gyp/generator/make.py
+index b87138965e..80e7df042b 100755
+--- a/tools/gyp/pylib/gyp/generator/make.py
++++ b/tools/gyp/pylib/gyp/generator/make.py
+@@ -1877,7 +1877,15 @@ $(builddir)/%.d: ;
+                 assert " " not in link_dep, (
+                     "Spaces in alink input filenames not supported (%s)" % link_dep
+                 )
+-            if (
++            if self.flavor == "android" and self.toolset == "host":
++                self.WriteDoCmd(
++                    [self.output_binary],
++                    link_deps,
++                    "alink",
++                    part_of_all,
++                    postbuilds=postbuilds,
++                )
++            elif (
+                 self.flavor not in ("mac", "openbsd", "netbsd", "win")
+                 and not self.is_standalone_static_library
+             ):

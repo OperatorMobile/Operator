@@ -1,0 +1,41 @@
+# Android local machine configuration
+mobile/android/local.properties
+local.properties
+
+# Android / Gradle build output
+.gradle/
+build/
+**/build/
+mobile/android/app/src/main/jniLibs/
+*.apk
+*.aab
+*.apks
+*.idsig
+
+# Rust build output
+target/
+**/target/
+
+# IDE and OS noise
+.idea/
+*.iml
+.DS_Store
+
+# Local logs and temp files
+*.log
+*-smoke.png
+tmp/
+temp/
+local-artifacts/
+operator-*.png
+!assets/operator-logo.png
+ui-screenshots/
+
+# Generated Android runtime inputs
+*.tar.zst
+*.tar.gz
+*.tgz
+*.zip.sha256
+third_party/android-runtime-sources/sources/
+third_party/android-runtime-sources/downloads/
+third_party/android-runtime-sources/build/

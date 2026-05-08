@@ -1,0 +1,24 @@
+diff --git a/scripts/build/configure/termux_step_configure_autotools.sh b/scripts/build/configure/termux_step_configure_autotools.sh
+index 6ae2cafdc6..7215482f85 100644
+--- a/scripts/build/configure/termux_step_configure_autotools.sh
++++ b/scripts/build/configure/termux_step_configure_autotools.sh
+@@ -118,2 +118,19 @@ termux_step_configure_autotools() {
+		|| (termux_step_configure_autotools_failure_hook && false)
++
++	if [[ "${OPERATOR_TOOLCHAIN_PROOT_COMPAT:-false}" == "true" ]]; then
++		local libtool_script
++		while IFS= read -r libtool_script; do
++			# proot can fail libtool's unsafe validator because it saves and
++			# rewires stdin with shell exec redirections. The safe validator uses
++			# sed/grep instead and avoids that fd path.
++			perl -0pi -e 's/(^|[;&|()[:space:]])func_lalib_unsafe_p([[:space:]]+"\$[A-Za-z_][A-Za-z0-9_]*")/${1}func_lalib_p$2/gm' "$libtool_script"
++		done < <(
++			find \
++				"$TERMUX_PKG_SRCDIR" \
++				"$TERMUX_PKG_BUILDDIR" \
++				-maxdepth 2 \
++				-type f \
++				-name libtool 2>/dev/null
++		)
++	fi
+ }

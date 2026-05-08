@@ -1,0 +1,56 @@
+Allow config lock chmod failures on Android with a warning.
+
+Source: https://github.com/termux/termux-packages/blob/master/packages/git/config.c.patch
+
+diff --git a/config.c b/config.c
+index 9db3661..60a1d93 100644
+--- a/config.c
++++ b/config.c
+@@ -75,3 +75,19 @@ static struct config_set protected_config;
+ static struct config_set protected_config;
+ 
++/*
++ * Protecting the project-specific git configuration file (.git/config) is
++ * not possible on some Android file systems, which can make operations such as
++ * clone fail with an error message. Warn once and proceed.
++ */
++static void android_warn_once_about_lockfile(void)
++{
++	static int already_warned;
++
++	if (!already_warned) {
++		warning("cannot protect .git/config on this file system"
++			" - do not store sensitive information here");
++		already_warned = 1;
++	}
++}
++
+ static int config_file_fgetc(struct config_source *conf)
+@@ -3096,9 +3112,13 @@ static ssize_t write_pair(int fd, const char *key, const char *value,
+ 		in_fd = -1;
+ 
+ 		if (chmod(get_lock_file_path(&lock), st.st_mode & 07777) < 0) {
++#ifdef __ANDROID__
++			android_warn_once_about_lockfile();
++#else
+ 			error_errno(_("chmod on %s failed"), get_lock_file_path(&lock));
+ 			ret = CONFIG_NO_WRITE;
+ 			goto out_free;
++#endif
+ 		}
+ 
+ 		if (store.seen_nr == 0) {
+@@ -3350,9 +3370,13 @@ int git_config_rename_section_in_file(const char *config_filename,
+ 	}
+ 
+ 	if (chmod(get_lock_file_path(&lock), st.st_mode & 07777) < 0) {
++#ifdef __ANDROID__
++		android_warn_once_about_lockfile();
++#else
+ 		ret = error_errno(_("chmod on %s failed"),
+ 				  get_lock_file_path(&lock));
+ 		goto out;
++#endif
+ 	}
+ 
+ 	while (fgets(buf, sizeof(buf), config_file)) {

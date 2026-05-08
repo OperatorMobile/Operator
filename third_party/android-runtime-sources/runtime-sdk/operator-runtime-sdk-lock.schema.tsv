@@ -1,0 +1,21 @@
+# key	required	description
+schemaVersion	true	Lock schema version. Current value: 1.
+artifact	true	Runtime SDK archive file name.
+profile	true	Runtime SDK profile name, such as core.
+version	true	Runtime SDK version or release identifier.
+appId	true	Android application id whose app-private prefix this SDK targets.
+abi	true	Android native ABI, initially arm64-v8a.
+androidApi	true	Android API level used for native builds.
+androidTarget	true	Android compiler target triple.
+prefix	true	On-device absolute prefix this SDK was built for.
+prefixRelative	true	Archive-relative prefix directory. Current value: usr.
+packages	true	Space-separated package names from the selected profile manifest.
+packageGraph	false	Optional package graph report path used during artifact creation.
+source.name	true	Source repository identifier recorded in the JSON manifest sources array.
+source.repo	true	Source repository URL recorded in the JSON manifest sources array.
+source.ref	true	Source ref recorded in the JSON manifest sources array.
+source.commit	true	Exact source commit recorded in the JSON manifest sources array.
+source.license	true	Source or package-system license summary recorded in third-party notices.
+artifactSha256	false	Published beside the archive as <artifact>.sha256.
+buildContainerDigest	false	Required for CI source rebuild lockfiles.
+patchSetSha256	false	Required when runtime SDK patches are applied.

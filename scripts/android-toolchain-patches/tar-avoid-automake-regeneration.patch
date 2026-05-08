@@ -1,0 +1,13 @@
+diff --git a/packages/tar/build.sh b/packages/tar/build.sh
+index bce77c34dc..8e5f8f714e 100644
+--- a/packages/tar/build.sh
++++ b/packages/tar/build.sh
+@@ -24,3 +24,8 @@ termux_step_pre_configure() {
+ 		TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" --disable-year2038"
+ 	fi
+ }
++
++termux_step_post_configure() {
++	touch "$TERMUX_PKG_SRCDIR/src/Makefile.in"
++	perl -0pi -e 's/\$\(LIB_SELINUX\) \$\(LIB_SETLOCALE_NULL\)/\$(LIB_SELINUX) \$(LIB_SETLOCALE_NULL) \\\n \$(LIBINTL) \$(LIBICONV)/' "$TERMUX_PKG_BUILDDIR/src/Makefile"
++}

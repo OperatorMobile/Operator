@@ -1,0 +1,42 @@
+# kind	name	relative_path	mode	notes
+dir	prefix	usr	dir	Runtime prefix root
+dir	bin	usr/bin	dir	Command directory
+dir	include	usr/include	dir	Header directory
+dir	lib	usr/lib	dir	Library directory
+dir	pkgconfig	usr/lib/pkgconfig	dir	Primary pkg-config directory
+cmd	sh	usr/bin/sh	executable	Shell entrypoint
+cmd	busybox	usr/bin/busybox	executable	BusyBox applet provider
+cmd	which	usr/bin/which	executable	Command discovery
+cmd	curl	usr/bin/curl	executable	Network/TLS download client
+cmd	git	usr/bin/git	executable	Git CLI
+cmd	git-remote-http	usr/bin/git-remote-http	executable	Git HTTPS remote helper
+cmd	git-remote-https	usr/bin/git-remote-https	executable	Git HTTPS remote helper
+cmd	ssh	usr/bin/ssh	executable	OpenSSH client
+cmd	scp	usr/bin/scp	executable	SCP client
+cmd	sftp	usr/bin/sftp	executable	SFTP client
+cmd	ssh-agent	usr/bin/ssh-agent	executable	SSH agent
+cmd	ssh-add	usr/bin/ssh-add	executable	SSH agent key add
+cmd	ssh-keygen	usr/bin/ssh-keygen	executable	SSH key generation
+cmd	ssh-keyscan	usr/bin/ssh-keyscan	executable	SSH host key scan
+cmd	make	usr/bin/make	executable	GNU make
+cmd	python3	usr/bin/python3	executable	Python 3
+cmd	python	usr/bin/python	executable	Python alias
+cmd	pip	usr/bin/pip	executable	Pip
+cmd	node	usr/bin/node	executable	Node.js
+cmd	npm	usr/bin/npm	executable	npm
+cmd	npx	usr/bin/npx	executable	npx
+cmd	gh	usr/bin/gh	executable	GitHub CLI
+cmd	rg	usr/bin/rg	executable	ripgrep
+cmd	apply_patch	usr/bin/apply_patch	executable	Codex patch helper
+file	ca-bundle	usr/etc/tls/cert.pem	file	Shared CA bundle
+pkgconfig	openssl	usr/lib/pkgconfig/openssl.pc	file	OpenSSL pkg-config metadata
+pkgconfig	zlib	usr/lib/pkgconfig/zlib.pc	file	zlib pkg-config metadata
+pkgconfig	libffi	usr/lib/pkgconfig/libffi.pc	file	libffi pkg-config metadata
+pkgconfig	sqlite3	usr/lib/pkgconfig/sqlite3.pc	file	SQLite pkg-config metadata
+header	python	usr/include/python3.13/Python.h	file	CPython headers
+header	node	usr/include/node/node.h	file	Node headers
+header	openssl	usr/include/openssl/ssl.h	file	OpenSSL headers
+header	zlib	usr/include/zlib.h	file	zlib header
+header	libffi	usr/include/ffi.h	file	libffi header
+header	sqlite	usr/include/sqlite3.h	file	SQLite header
+lib	libpython	usr/lib/libpython3.13.so	file	CPython shared library

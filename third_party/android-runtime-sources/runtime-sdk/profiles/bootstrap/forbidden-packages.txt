@@ -1,0 +1,8 @@
+# Packages/dependencies that should not appear in the bootstrap SDK package graph.
+tk
+x11
+libx11
+git-gui
+gitk
+subversion
+gdb

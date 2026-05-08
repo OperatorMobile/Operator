@@ -1,0 +1,57 @@
+Guard Git identity fallback against incomplete Android passwd entries.
+
+Android app processes can expose a passwd entry with missing fields under some
+execution paths. Git's reflog writing may request a non-strict committer ident
+during clone, so this must fall back to a bogus but safe identity instead of
+dereferencing null passwd fields.
+
+diff --git a/ident.c b/ident.c
+index c9f5030..c9d0aa1 100644
+--- a/ident.c
++++ b/ident.c
+@@ -43,7 +43,7 @@ static struct passwd *xgetpwuid_self(int *is_bogus)
+ 
+ 	errno = 0;
+ 	pw = getpwuid(getuid());
+-	if (!pw) {
++	if (!pw || !pw->pw_name || !pw->pw_name[0]) {
+ 		static struct passwd fallback;
+ 		fallback.pw_name = (char *) "unknown";
+ #ifndef NO_GECOS_IN_PWENT
+@@ -58,6 +58,7 @@ static struct passwd *xgetpwuid_self(int *is_bogus)
+ static void copy_gecos(const struct passwd *w, struct strbuf *name)
+ {
+ 	const char *src;
++	const char *gecos;
+ 
+ 	/* Traditionally GECOS field had office phone numbers etc, separated
+ 	 * with commas.  Also & stands for capitalized form of the login name.
+@@ -65,6 +66,9 @@ static void copy_gecos(const struct passwd *w, struct strbuf *name)
+ 	 */
+ 
+-	for (src = get_gecos(w); *src && *src != ','; src++) {
++	gecos = get_gecos(w);
++	src = (gecos && gecos[0]) ? gecos : w->pw_name;
++
++	for (; *src && *src != ','; src++) {
+ 		int ch = *src;
+ 		if (ch != '&')
+ 			strbuf_addch(name, ch);
+@@ -144,10 +147,16 @@ static void copy_email(const struct passwd *pw, struct strbuf *email,
+ 		       int *is_bogus)
+ {
++	const char *name = (pw && pw->pw_name && pw->pw_name[0])
++		? pw->pw_name
++		: "unknown";
++
+ 	/*
+ 	 * Make up a fake email address
+ 	 * (name + '@' + hostname [+ '.' + domainname])
+ 	 */
+-	strbuf_addstr(email, pw->pw_name);
++	if (!pw || !pw->pw_name || !pw->pw_name[0])
++		*is_bogus = 1;
++	strbuf_addstr(email, name);
+ 	strbuf_addch(email, '@');
+ 
+ 	if (!add_mailname_host(email))

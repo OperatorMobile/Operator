@@ -1,0 +1,10 @@
+# package	category	required	notes
+libxml2	devlib	false	XML headers and libraries for native package builds
+libxslt	devlib	false	XSLT headers and libraries for native package builds
+libjpeg-turbo	devlib	false	JPEG headers and libraries
+libpng	devlib	false	PNG headers and libraries
+libwebp	devlib	false	WebP headers and libraries
+freetype	devlib	false	Font rendering headers and libraries
+fontconfig	devlib	false	Fontconfig metadata and libraries; must stay headless
+cairo	devlib	false	2D graphics library; must avoid unwanted X11 backend in core
+pango	devlib	false	Text layout library; extended profile only

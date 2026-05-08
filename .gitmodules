@@ -1,0 +1,6 @@
+# Operator uses the OperatorMobile Codex fork so Android app-server changes are
+# reproducible from a fresh checkout.
+[submodule "third_party/codex"]
+	path = third_party/codex
+	url = https://github.com/OperatorMobile/codex.git
+	branch = operator/android-port

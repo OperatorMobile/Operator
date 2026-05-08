@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Operator Runtime</string>
+    <string name="runtime_permission_label">Operator runtime access</string>
+    <string name="runtime_permission_description">Allows Operator to connect to the local runtime extension.</string>
+</resources>

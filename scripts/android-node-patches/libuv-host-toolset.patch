@@ -1,0 +1,30 @@
+--- a/deps/uv/uv.gyp
++++ b/deps/uv/uv.gyp
+@@ -266,25 +266,25 @@
+           ],
+         }],
+-        [ 'OS in "mac ios"', {
++        [ 'OS in "mac ios" or (OS=="android" and _toolset=="host" and host_os=="darwin")', {
+           'sources': [
+             '<@(uv_sources_apple)',
+           ],
+           'defines': [
+             '_DARWIN_USE_64_BIT_INODE=1',
+             '_DARWIN_UNLIMITED_SELECT=1',
+           ]
+         }],
+-        [ 'OS=="linux"', {
++        [ 'OS=="linux" or (OS=="android" and _toolset=="host" and host_os=="linux")', {
+           'defines': [ '_GNU_SOURCE' ],
+           'sources': [
+             '<@(uv_sources_linux)',
+           ],
+           'link_settings': {
+             'libraries': [ '-ldl', '-lrt' ],
+           },
+         }],
+-        [ 'OS=="android"', {
++        [ 'OS=="android" and _toolset=="target"', {
+           'defines': [
+             '_GNU_SOURCE',
+           ],

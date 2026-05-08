@@ -1,0 +1,13 @@
+diff --git a/deps/uv/uv.gyp b/deps/uv/uv.gyp
+index 3fef57ec71..029684e6a5 100644
+--- a/deps/uv/uv.gyp
++++ b/deps/uv/uv.gyp
+@@ -389,7 +389,7 @@
+             'src/unix/bsd-proctitle.c'
+           ],
+         }],
+-        [ 'OS in "ios mac freebsd dragonflybsd openbsd netbsd".split()', {
++        [ 'OS in "ios mac freebsd dragonflybsd openbsd netbsd".split() or (OS=="android" and _toolset=="host" and host_os=="darwin")', {
+           'sources': [
+             '<@(uv_sources_bsd_common)',
+           ],
